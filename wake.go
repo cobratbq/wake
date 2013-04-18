@@ -8,7 +8,7 @@ import (
 
 func main() {
 	if len(os.Args) < 3 {
-		fmt.Printf("Usage: %s <broadcast-address> <mac-address> ...\n", os.Args[0])
+		fmt.Printf("Usage: %s <broadcast-address> <mac-address> [mac-address ...]\n", os.Args[0])
 		return
 	}
 	bcast := os.Args[1]
