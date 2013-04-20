@@ -1,21 +1,27 @@
 package main
 
 import (
-	"fmt"
+	"flag"
 	"github.com/ghthor/gowol"
-	"os"
+	"log"
 )
 
 func main() {
-	if len(os.Args) < 3 {
-		fmt.Printf("Usage: %s <broadcast-address> <mac-address> [mac-address ...]\n", os.Args[0])
+	var bcast = flag.String("b", "", "The network's broadcast address.")
+	flag.Parse()
+	if len(*bcast) <= 0 {
+		log.Printf("Please specify the network's broadcast address using the '-b' flag.")
 		return
 	}
-	bcast := os.Args[1]
-	macs := os.Args[2:]
-	for _, m := range macs {
-		if err := wol.SendMagicPacket(m, bcast); err != nil {
-			fmt.Printf("Error for MAC '%s': '%s'\n", m, err.Error())
+	var args = flag.Args()
+	if len(args) <= 0 {
+		log.Printf("Please specify at least one MAC-address.\n")
+		return
+	}
+	log.Printf("Using broadcast address: %s\n", *bcast)
+	for _, m := range args {
+		if err := wol.SendMagicPacket(m, *bcast); err != nil {
+			log.Printf("Error for MAC '%s': '%s'\n", m, err.Error())
 		}
 	}
 }
