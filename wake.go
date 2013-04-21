@@ -8,10 +8,9 @@ import (
 )
 
 func main() {
-	var c *config
 	c, err := initialize()
 	if err != nil {
-		os.Stderr.WriteString("An error occurred while initializing: "+err.Error()+"\n")
+		os.Stderr.WriteString(err.Error()+"\n")
 		return
 	}
 	for _, m := range c.macs {
