@@ -4,7 +4,7 @@ wake
 Tiny program for sending out wake-on-lan packets
 
 Usage:
-> ./wake -b <broadcast-address> <mac-address> [mac-address ...]
+> ./wake -b &lt;broadcast-address&gt; &lt;mac-address&gt; \[mac-address ...\]
 
 broadcast-address: The network's broadcast address on which to send the WOL packets.
 mac-address: The MAC address of the ethernet adapter of the computer you want to wake.
