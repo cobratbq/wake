@@ -77,12 +77,12 @@ func (c *config) parseFlags() error {
 		return errors.New("Please specify at least one MAC-address.\n")
 	}
 	for _, macAddress := range args {
-		c.AddMac(macAddress)
+		c.Add(macAddress)
 	}
 	return nil
 }
 
-func (c *config) AddMac(macAddress string) {
+func (c *config) Add(macAddress string) {
 	var mac = strings.ToLower(macAddress)
 	c.Macs[mac] = true
 }
