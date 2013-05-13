@@ -20,5 +20,7 @@ TODO
 ### In progress ###
 
 ### Others ###
+* Check for availability of work: no mac addresses and no profile specified?
+* Separately check for a correct configuration, after having loaded the config file and the commandline arguments.
 * Describe the format of 'wake.conf'.
 * Support multiple broadcast addresses, for waking devices on multiple networks simultaneously.
