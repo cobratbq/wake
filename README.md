@@ -14,6 +14,20 @@ Either at least one mac address should be specified, or the name of a profile th
 
 For this to work, the wake-on-lan setting has to be enabled in the bios of the target computer.
 
+
+Example config-file
+-------------------
+An example config file. It must be named '*wake.conf*'.
+
+*wake.conf*:
+> {
+> 	"broadcast": "192.168.0.255",
+> 	"profiles": {
+> 		"all": []
+> 	}
+> }
+
+
 TODO
 ----
 
