@@ -65,6 +65,7 @@ func (c *config) parseFlags() error {
 		return errors.New("Usage: " + os.Args[0] + " -b <broadcast-address> <mac-address> [mac-address ...]\n")
 	}
 	var bcast = flag.String("b", "", "The network's broadcast address.")
+	var prof = flag.String("p", "", "The profile name of the profile to use.")
 	// Parse the command line flags
 	flag.Parse()
 	if len(*bcast) > 0 {
@@ -72,12 +73,21 @@ func (c *config) parseFlags() error {
 	} else if len(c.Broadcast) <= 0 {
 		return errors.New("Please specify the network's broadcast address using the '-b' flag.")
 	}
-	var args = flag.Args()
-	if len(args) <= -1 {
-		return errors.New("Please specify at least one MAC-address.\n")
+	if len(*prof) > 0 {
+		addrs, ok := c.Profiles[*prof]
+		if ok {
+			for _, a := range addrs {
+				c.Add(a)
+			}
+		} else {
+			os.Stderr.WriteString("Profile with name '" + *prof + "' does not exist.\n")
+		}
 	}
-	for _, macAddress := range args {
-		c.Add(macAddress)
+	var args = flag.Args()
+	if len(args) > 0 {
+		for _, address := range args {
+			c.Add(address)
+		}
 	}
 	return nil
 }
