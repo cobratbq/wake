@@ -34,10 +34,11 @@ TODO
 ----
 
 ### In progress ###
+* Describe the format of 'wake.conf'.
 
 ### Others ###
+* Add parameter '-v' for verbose output. Be (pretty much completely) silent by default.
 * Check for availability of work: no mac addresses and no profile specified?
 * Separately check for a correct configuration, after having loaded the config file and the commandline arguments.
-* Add parameter '-v' for verbose output. Be (pretty much completely) silent by default.
-* Describe the format of 'wake.conf'.
+* Default profile that is used when no profile or mac address is specified? (Just start the binary to make it work.)
 * Support multiple broadcast addresses, for waking devices on multiple networks simultaneously.
