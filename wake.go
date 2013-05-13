@@ -61,9 +61,6 @@ func (c *config) load(fileName string) error {
 }
 
 func (c *config) parseFlags() error {
-	if len(os.Args) <= 1 {
-		return errors.New("Usage: " + os.Args[0] + " -b <broadcast-address> <mac-address> [mac-address ...]\n")
-	}
 	var bcast = flag.String("b", "", "The network's broadcast address.")
 	var prof = flag.String("p", "", "The profile name of the profile to use.")
 	// Parse the command line flags
