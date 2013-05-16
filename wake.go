@@ -18,7 +18,7 @@ func main() {
 	for m, _ := range c.Macs {
 		if err := wol.SendMagicPacket(m, c.Broadcast); err != nil {
 			os.Stderr.WriteString("Error for MAC '" + m + "': '" + err.Error() + "'\n")
-		} else {
+		} else if c.Verbose {
 			os.Stdout.WriteString("Waking '" + m + "' ...\n")
 		}
 	}
@@ -28,6 +28,7 @@ type config struct {
 	Broadcast string
 	Macs      map[string]bool
 	Profiles  map[string][]string
+	Verbose   bool
 }
 
 func initialize() (*config, error) {
@@ -36,7 +37,7 @@ func initialize() (*config, error) {
 	c.Profiles = make(map[string][]string)
 	if err := c.load("wake.conf"); err != nil {
 		os.Stderr.WriteString("Failed to load config file 'wake.conf': " + err.Error() + "\n")
-	} else {
+	} else if c.Verbose {
 		os.Stderr.WriteString("Config file loaded.\n")
 	}
 	if err := c.parseFlags(); err != nil {
@@ -48,7 +49,7 @@ func initialize() (*config, error) {
 func (c *config) load(fileName string) error {
 	fileReader, err := os.Open(fileName)
 	if err != nil {
-		os.Stderr.WriteString("No config file not found or read access is not allowed.\n")
+		os.Stderr.WriteString("Config file not found or file cannot be read.\n")
 		return err
 	}
 	defer fileReader.Close()
@@ -63,6 +64,7 @@ func (c *config) load(fileName string) error {
 func (c *config) parseFlags() error {
 	var bcast = flag.String("b", "", "The network's broadcast address.")
 	var prof = flag.String("p", "", "The profile name of the profile to use.")
+	var verbose = flag.Bool("v", false, "Be verbose during operation.")
 	// Parse the command line flags
 	flag.Parse()
 	if len(*bcast) > 0 {
@@ -79,6 +81,10 @@ func (c *config) parseFlags() error {
 		} else {
 			os.Stderr.WriteString("Profile with name '" + *prof + "' does not exist.\n")
 		}
+	}
+	if *verbose {
+		//For now only pick up the flag if it is set to true.
+		c.Verbose = *verbose
 	}
 	var args = flag.Args()
 	if len(args) > 0 {
