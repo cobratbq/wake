@@ -4,7 +4,7 @@ wake
 Tiny program for sending out wake-on-lan packets
 
 Usage:
-> ./wake \[-b &lt;broadcast-address&gt;\] \[-p profile-name\] \[mac-address ...\]
+> ./wake \[-b &lt;broadcast-address&gt;\] \[-p profile-name\] \[-v\] \[mac-address ...\]
 
 **broadcast-address**: The network's broadcast address on which to send the WOL packets.
 
@@ -25,8 +25,9 @@ An example config file is JSON-formatted. It must be named ' *wake.conf* '.
 > {
 > 	"broadcast": "192.168.0.255",
 > 	"profiles": {
-> 		"all": []
-> 	}
+> 		"all": ["aa:aa:aa:aa:aa:aa", "bb:bb:bb:bb:bb:bb"]
+> 	},
+>	"verbose": false
 > }
 
 
@@ -34,11 +35,8 @@ TODO
 ----
 
 ### In progress ###
-* Describe the format of 'wake.conf'.
 
 ### Others ###
-* Add parameter '-v' for verbose output. Be (pretty much completely) silent by default.
-* Check for availability of work: no mac addresses and no profile specified?
 * Separately check for a correct configuration, after having loaded the config file and the commandline arguments.
 * Default profile that is used when no profile or mac address is specified? (Just start the binary to make it work.)
 * Support multiple broadcast addresses, for waking devices on multiple networks simultaneously.
