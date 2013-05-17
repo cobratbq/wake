@@ -12,7 +12,7 @@ import (
 func main() {
 	c, err := initialize()
 	if err != nil {
-		os.Stderr.WriteString(err.Error() + "\n")
+		os.Stderr.WriteString("Initialization failed: " + err.Error() + "\n")
 		return
 	}
 	for m, _ := range c.Macs {
@@ -32,16 +32,19 @@ type config struct {
 }
 
 func initialize() (*config, error) {
+	//Initialize config struct
 	var c config
 	c.Macs = make(map[string]bool)
 	c.Profiles = make(map[string][]string)
+	//Initialize config first by config file.
 	if err := c.load("wake.conf"); err != nil {
 		os.Stderr.WriteString("Failed to load config file 'wake.conf': " + err.Error() + "\n")
 	} else if c.Verbose {
 		os.Stderr.WriteString("Config file loaded.\n")
 	}
+	//Then incorporate provided flags.
 	if err := c.parseFlags(); err != nil {
-		os.Stderr.WriteString(err.Error() + "\n")
+		return nil, err
 	}
 	return &c, nil
 }
@@ -49,19 +52,18 @@ func initialize() (*config, error) {
 func (c *config) load(fileName string) error {
 	fileReader, err := os.Open(fileName)
 	if err != nil {
-		os.Stderr.WriteString("Config file not found or file cannot be read.\n")
 		return err
 	}
 	defer fileReader.Close()
 	dec := json.NewDecoder(fileReader)
 	if err := dec.Decode(c); err != nil {
-		os.Stderr.WriteString("An error occurred while reading the config file: " + err.Error() + "\n")
 		return err
 	}
 	return nil
 }
 
 func (c *config) parseFlags() error {
+	// Define available flags.
 	var bcast = flag.String("b", "", "The network's broadcast address.")
 	var prof = flag.String("p", "", "The profile name of the profile to use.")
 	var verbose = flag.Bool("v", false, "Be verbose during operation.")
@@ -79,7 +81,7 @@ func (c *config) parseFlags() error {
 				c.Add(a)
 			}
 		} else {
-			os.Stderr.WriteString("Profile with name '" + *prof + "' does not exist.\n")
+			return errors.New("Profile with name '" + *prof + "' does not exist.")
 		}
 	}
 	if *verbose {
