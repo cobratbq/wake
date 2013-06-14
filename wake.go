@@ -36,20 +36,22 @@ func initialize() (*config, error) {
 	var c config
 	c.Macs = make(map[string]bool)
 	c.Profiles = make(map[string][]string)
+	//Initialize flags
+	var flgs = initFlags()
 	//Initialize config first by config file.
-	if err := c.load("wake.conf"); err != nil {
+	if err := c.loadConfig("wake.conf"); err != nil && *flgs.Verbose {
 		os.Stderr.WriteString("Failed to load config file 'wake.conf': " + err.Error() + "\n")
 	} else if c.Verbose {
 		os.Stderr.WriteString("Config file loaded.\n")
 	}
 	//Then incorporate provided flags.
-	if err := c.parseFlags(); err != nil {
+	if err := c.loadFlags(flgs); err != nil {
 		return nil, err
 	}
 	return &c, nil
 }
 
-func (c *config) load(fileName string) error {
+func (c *config) loadConfig(fileName string) error {
 	fileReader, err := os.Open(fileName)
 	if err != nil {
 		return err
@@ -62,31 +64,42 @@ func (c *config) load(fileName string) error {
 	return nil
 }
 
-func (c *config) parseFlags() error {
+type flags struct {
+	Bcast   *string
+	Prof    *string
+	Verbose *bool
+}
+
+func initFlags() *flags {
+	var f flags
 	// Define available flags.
-	var bcast = flag.String("b", "", "The network's broadcast address.")
-	var prof = flag.String("p", "", "The profile name of the profile to use.")
-	var verbose = flag.Bool("v", false, "Be verbose during operation.")
-	// Parse the command line flags
+	f.Bcast = flag.String("b", "", "The network's broadcast address.")
+	f.Prof = flag.String("p", "", "The profile name of the profile to use.")
+	f.Verbose = flag.Bool("v", false, "Be verbose during operation.")
 	flag.Parse()
-	if len(*bcast) > 0 {
-		c.Broadcast = *bcast
+	return &f
+}
+
+func (c *config) loadFlags(flgs *flags) error {
+	// Parse the command line flags
+	if len(*flgs.Bcast) > 0 {
+		c.Broadcast = *flgs.Bcast
 	} else if len(c.Broadcast) <= 0 {
 		return errors.New("Please specify the network's broadcast address using the '-b' flag.")
 	}
-	if len(*prof) > 0 {
-		addrs, ok := c.Profiles[*prof]
+	if len(*flgs.Prof) > 0 {
+		addrs, ok := c.Profiles[*flgs.Prof]
 		if ok {
 			for _, a := range addrs {
 				c.Add(a)
 			}
 		} else {
-			return errors.New("Profile with name '" + *prof + "' does not exist.")
+			return errors.New("Profile with name '" + *flgs.Prof + "' does not exist.")
 		}
 	}
-	if *verbose {
+	if *flgs.Verbose {
 		//For now only pick up the flag if it is set to true.
-		c.Verbose = *verbose
+		c.Verbose = *flgs.Verbose
 	}
 	var args = flag.Args()
 	if len(args) > 0 {
