@@ -29,14 +29,3 @@ An example config file is JSON-formatted. It must be named ' *wake.conf* '.
 > 	},
 >	"verbose": false
 > }
-
-
-TODO
-----
-
-### In progress ###
-
-### Others ###
-* Separately check for a correct configuration, after having loaded the config file and the commandline arguments.
-* Default profile that is used when no profile or mac address is specified? (Just start the binary to make it work.)
-* Support multiple broadcast addresses, for waking devices on multiple networks simultaneously.
