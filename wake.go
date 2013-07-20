@@ -26,7 +26,7 @@ func main() {
 
 type config struct {
 	Broadcast string
-	Macs      map[string]bool
+	Macs      map[string]struct{}
 	Profiles  map[string][]string
 	Verbose   bool
 }
@@ -34,7 +34,7 @@ type config struct {
 func initialize() (*config, error) {
 	//Initialize config struct
 	var c config
-	c.Macs = make(map[string]bool)
+	c.Macs = make(map[string]struct{})
 	c.Profiles = make(map[string][]string)
 	//Initialize flags
 	var flgs = initFlags()
@@ -110,7 +110,7 @@ func (c *config) loadFlags(flgs *flags) error {
 	return nil
 }
 
-func (c *config) Add(macAddress string) {
-	var mac = strings.ToLower(macAddress)
-	c.Macs[mac] = true
+func (c *config) Add(address string) {
+	var mac = strings.ToLower(address)
+	c.Macs[mac] = struct{}{}
 }
