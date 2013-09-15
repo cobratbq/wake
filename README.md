@@ -4,9 +4,11 @@ wake
 Tiny program for sending out wake-on-lan packets
 
 Usage:
-> ./wake \[-b &lt;broadcast-address&gt;\] \[-p profile-name\] \[-v\] \[mac-address ...\]
+~~~
+./wake [-b <broadcast-address>] [-p profile-name] [-v] [mac-address ...]
+~~~
 
-**broadcast-address**: The network's broadcast address on which to send the WOL packets.
+**broadcast-address**: The network's broadcast address (ip address) on which to send the WOL packets.
 
 **mac-address**: The MAC address of the ethernet adapter of the computer you want to wake.
 
@@ -22,10 +24,12 @@ Example config-file
 An example config file is JSON-formatted. It must be named ' *wake.conf* '.
 
 *wake.conf*:
-> {
-> 	"broadcast": "192.168.0.255",
-> 	"profiles": {
-> 		"all": ["aa:aa:aa:aa:aa:aa", "bb:bb:bb:bb:bb:bb"]
-> 	},
->	"verbose": false
-> }
+~~~
+{
+	"broadcast": "192.168.0.255",
+	"profiles": {
+		"all": ["aa:aa:aa:aa:aa:aa", "bb:bb:bb:bb:bb:bb"]
+	},
+	"verbose": false
+}
+~~~
