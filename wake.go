@@ -15,7 +15,7 @@ func main() {
 		os.Stderr.WriteString("Initialization failed: " + err.Error() + "\n")
 		return
 	}
-	for m, _ := range c.Macs {
+	for m := range c.Macs {
 		if err := wol.SendMagicPacket(m, c.Broadcast); err != nil {
 			os.Stderr.WriteString("Error for MAC '" + m + "': '" + err.Error() + "'\n")
 		} else if c.Verbose {
