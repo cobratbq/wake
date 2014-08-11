@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"errors"
 	"flag"
-	"github.com/ghthor/gowol"
 	"os"
 	"strings"
+
+	"github.com/ghthor/gowol"
 )
 
 func main() {
@@ -16,7 +17,7 @@ func main() {
 		return
 	}
 	for m := range c.Macs {
-		if err := wol.SendMagicPacket(m, c.Broadcast); err != nil {
+		if err := wol.MagicWake(m, c.Broadcast); err != nil {
 			os.Stderr.WriteString("Error for MAC '" + m + "': '" + err.Error() + "'\n")
 		} else if c.Verbose {
 			os.Stdout.WriteString("Waking '" + m + "' ...\n")
