@@ -1,4 +1,4 @@
-wake
+wake [![GoDoc](https://godoc.org/github.com/cobratbq/wake?status.svg)](https://godoc.org/github.com/cobratbq/wake) [![Build Status](https://travis-ci.org/cobratbq/wake.svg?branch=master)](https://travis-ci.org/cobratbq/wake)
 ====
 
 Tiny program for sending out wake-on-lan packets
